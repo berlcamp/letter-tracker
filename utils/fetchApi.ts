@@ -25,7 +25,7 @@ export async function fetchDocuments (filters: DocumentFilterTypes, perPageCount
 
     // Filter Date
     if (typeof filters.filterDate !== 'undefined') {
-      query = query.gte('date_created', format(new Date(filters.filterDate), 'yyyy-MM-dd'))
+      query = query.gte('date_received', format(new Date(filters.filterDate), 'yyyy-MM-dd'))
     }
 
     // Filter type

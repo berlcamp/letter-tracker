@@ -214,7 +214,7 @@ const Page: React.FC = () => {
   const email: string = session.user.email
 
   // Check access from permission settings or Super Admins
-  if (!hasAccess('document_tracker') && !superAdmins.includes(email))
+  if (!hasAccess('request_tracker') && !superAdmins.includes(email))
     return <Unauthorized />
 
   return (
@@ -290,7 +290,9 @@ const Page: React.FC = () => {
                     <tr
                       key={index}
                       className="app__tr">
-                      <td className="app__td app__td_firstcol">{item.type}</td>
+                      <td className="app__td app__td_firstcol">
+                        <span className="font-medium">{item.type}</span>
+                      </td>
                       <td className="app__td">
                         <div className="space-y-2">
                           <div>

@@ -112,7 +112,7 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
       particulars: editData ? editData.particulars : '',
       date_received: editData ? new Date(editData.date_received) : new Date(),
       activity_date: editData
-        ? new Date(editData.date_received) || undefined
+        ? new Date(editData.activity_date) || undefined
         : undefined,
     },
   })
@@ -134,8 +134,10 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
       const newData = {
         status: 'Open',
         type: formdata.type,
-        date_received: formdata.date_received,
-        activity_date: formdata.activity_date || null,
+        date_received: format(new Date(formdata.date_received), 'yyyy-MM-dd'),
+        activity_date: formdata.activity_date
+          ? format(new Date(formdata.activity_date), 'yyyy-MM-dd')
+          : null,
         particulars: formdata.particulars,
         requester: formdata.requester,
         user_id: session.user.id,
@@ -174,14 +176,16 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
 
   const handleUpdate = async (formdata: z.infer<typeof FormSchema>) => {
     if (!editData) return
-
+    console.log(formdata)
     setSaving(true)
 
     try {
       const newData = {
         type: formdata.type,
-        date_received: formdata.date_received,
-        activity_date: formdata.activity_date || null,
+        date_received: format(new Date(formdata.date_received), 'yyyy-MM-dd'),
+        activity_date: formdata.activity_date
+          ? format(new Date(formdata.activity_date), 'yyyy-MM-dd')
+          : null,
         particulars: formdata.particulars,
         requester: formdata.requester,
         user_id: session.user.id,
@@ -191,20 +195,21 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
         .from('asenso_letter_trackers')
         .update(newData)
         .eq('id', editData.id)
-        .select()
 
       if (error) throw new Error(error.message)
 
       // Upload files
-      await handleUploadFiles(data[0].id)
+      await handleUploadFiles(editData.id)
 
       // Append new data in redux
       const items = [...globallist]
       const updatedData = {
         ...newData,
         id: editData.id,
-        date_received: data[0].date_received,
-        activity_date: data[0].activity_date || null,
+        date_received: format(new Date(formdata.date_received), 'yyyy-MM-dd'),
+        activity_date: formdata.activity_date
+          ? format(new Date(formdata.activity_date), 'yyyy-MM-dd')
+          : null,
       }
       const foundIndex = items.findIndex((x) => x.id === updatedData.id)
       items[foundIndex] = { ...items[foundIndex], ...updatedData }

@@ -1,46 +1,46 @@
-"use client";
-import TopBar from "@/components/TopBar";
+'use client'
+import TopBar from '@/components/TopBar'
 import {
   SettingsSideBar,
   Sidebar,
   Title,
   Unauthorized,
-} from "@/components/index";
-import { useSupabase } from "@/context/SupabaseProvider";
-import React, { useEffect, useState } from "react";
+} from '@/components/index'
+import { useSupabase } from '@/context/SupabaseProvider'
+import React, { useEffect, useState } from 'react'
 
-import { superAdmins } from "@/constants/TrackerConstants";
-import type { UserAccessTypes } from "@/types/index";
-import ChooseUsers from "./ChooseUsers";
+import { superAdmins } from '@/constants/TrackerConstants'
+import type { UserAccessTypes } from '@/types/index'
+import ChooseUsers from './ChooseUsers'
 
 const Page: React.FC = () => {
-  const [users, setUsers] = useState<UserAccessTypes[] | []>([]);
-  const [loadedSettings, setLoadedSettings] = useState(false);
-  const { supabase, session } = useSupabase();
+  const [users, setUsers] = useState<UserAccessTypes[] | []>([])
+  const [loadedSettings, setLoadedSettings] = useState(false)
+  const { supabase, session } = useSupabase()
 
   const fetchData = async () => {
     try {
       const { data, error } = await supabase
-        .from("asenso_system_access")
-        .select("*, asenso_user:user_id(id,firstname,lastname,middlename)");
+        .from('asenso_system_access')
+        .select('*, asenso_user:user_id(id,firstname,lastname,middlename,name)')
 
       if (error) {
-        throw new Error(error.message);
+        throw new Error(error.message)
       }
 
-      setUsers(data);
+      setUsers(data)
 
-      setLoadedSettings(true);
+      setLoadedSettings(true)
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
   useEffect(() => {
-    void fetchData();
-  }, []);
+    void fetchData()
+  }, [])
 
-  if (!superAdmins.includes(session.user.email)) return <Unauthorized />;
+  if (!superAdmins.includes(session.user.email)) return <Unauthorized />
 
   return (
     <>
@@ -69,6 +69,6 @@ const Page: React.FC = () => {
         </div>
       </div>
     </>
-  );
-};
-export default Page;
+  )
+}
+export default Page
