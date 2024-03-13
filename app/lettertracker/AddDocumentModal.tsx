@@ -39,10 +39,11 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Input } from '@/components/ui/input'
 import { docTypes } from '@/constants/TrackerConstants'
-import type { AccountTypes, DocumentTypes } from '@/types'
+import type { AccountTypes, AttachmentTypes, DocumentTypes } from '@/types'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
+import Attachment from './Attachment'
 
 const FormSchema = z.object({
   type: z.string().min(1, {
@@ -71,6 +72,8 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
 
   const [selectedImages, setSelectedImages] = useState<any>([])
   const [saving, setSaving] = useState(false)
+
+  const [attachments, setAttachments] = useState<AttachmentTypes[] | []>([])
 
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -150,9 +153,6 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
 
       if (error) throw new Error(error.message)
 
-      // Upload files
-      await handleUploadFiles(data[0].id)
-
       // Append new data in redux
       const updatedData = {
         ...newData,
@@ -161,6 +161,9 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
         activity_date: data[0].activity_date || null,
       }
       dispatch(updateList([updatedData, ...globallist]))
+
+      // Upload files
+      await handleUploadFiles(data[0].id)
 
       // pop up the success message
       setToast('success', 'Successfully saved.')
@@ -198,9 +201,6 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
 
       if (error) throw new Error(error.message)
 
-      // Upload files
-      await handleUploadFiles(editData.id)
-
       // Append new data in redux
       const items = [...globallist]
       const updatedData = {
@@ -215,6 +215,9 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
       items[foundIndex] = { ...items[foundIndex], ...updatedData }
       dispatch(updateList(items))
 
+      // Upload files
+      await handleUploadFiles(editData.id)
+
       // pop up the success message
       setToast('success', 'Successfully saved.')
 
@@ -228,15 +231,28 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
   }
 
   const handleUploadFiles = async (id: string) => {
+    const newAttachments: any = []
+
     // Upload attachments
     await Promise.all(
       selectedImages.map(async (file: File) => {
         const { error } = await supabase.storage
           .from('hor_documents')
           .upload(`letter_tracker/${id}/${file.name}`, file)
-        if (error) console.log(error)
+
+        if (error) {
+          console.log(error)
+        } else {
+          newAttachments.push({ name: file.name })
+        }
       })
     )
+
+    // Update attachments on database column
+    const { error } = await supabase
+      .from('asenso_letter_trackers')
+      .update({ attachments: newAttachments })
+      .eq('id', id)
   }
 
   const deleteFile = (file: FileWithPath) => {
@@ -257,6 +273,28 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
       <span className="text-xs">{file.filename}</span>
     </div>
   ))
+
+  const fetchAttachments = async () => {
+    if (!editData) return false
+    const { data, error }: { data: AttachmentTypes[] | []; error: unknown } =
+      await supabase.storage
+        .from('hor_documents')
+        .list(`letter_tracker/${editData.id}`, {
+          limit: 100,
+          offset: 0,
+          sortBy: { column: 'name', order: 'asc' },
+        })
+
+    if (error) console.error(error)
+
+    setAttachments(data)
+  }
+
+  useEffect(() => {
+    if (editData) {
+      void fetchAttachments()
+    }
+  }, [])
 
   useEffect(() => {
     if (fileRejections.length > 0) {
@@ -453,6 +491,23 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
                 />
                 <hr />
                 <div className="w-full">
+                  {editData && (
+                    <div className="mb-4">
+                      {attachments?.length === 0 && (
+                        <span className="text-sm">No attachments</span>
+                      )}
+                      {attachments?.map((file, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-2 justify-start">
+                          <Attachment
+                            file={file.name}
+                            id={editData.id}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <div
                     {...getRootProps()}
                     className="cursor-pointer border-2 border-dashed border-gray-300 bg-gray-100 text-gray-600 px-4 py-10">

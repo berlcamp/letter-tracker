@@ -38,6 +38,7 @@ import { useSearchParams } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip } from 'react-tooltip'
 import AddStickyModal from './AddStickyModal'
+import Attachment from './Attachment'
 import StickiesModal from './StickiesModal'
 
 const Page: React.FC = () => {
@@ -327,6 +328,25 @@ const Page: React.FC = () => {
                               {item.particulars}
                             </span>
                           </div>
+                          {item.attachments && (
+                            <div>
+                              {item.attachments?.length === 0 && (
+                                <span className="font-medium">
+                                  No attachments
+                                </span>
+                              )}
+                              {item.attachments?.map((file, index) => (
+                                <div
+                                  key={index}
+                                  className="flex items-center space-x-2 justify-start">
+                                  <Attachment
+                                    file={file.name}
+                                    id={item.id}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </td>
                       <td className="app__td">

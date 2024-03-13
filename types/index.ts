@@ -78,6 +78,7 @@ export interface DocumentTypes {
   user_id: string
   asenso_user: AccountTypes
   tracker_stickies: StickiesTypes[]
+  attachments: { name: string}[]
 }
 
 export interface AccountTypes {
