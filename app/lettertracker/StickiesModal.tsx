@@ -113,7 +113,7 @@ export default function StickiesModal({ hideModal }: ModalProps) {
           <div className="app__modal_wrapper3">
             <div className="app__modal_header">
               <h5 className="text-md font-bold leading-normal text-gray-800 dark:text-gray-300">
-                Stickies
+                Starred
               </h5>
               <CustomButton
                 containerStyles="app__btn_gray"

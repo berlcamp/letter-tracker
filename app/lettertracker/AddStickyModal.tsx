@@ -69,7 +69,7 @@ export default function AddStickyModal({ item, hideModal }: ModalProps) {
             <h5
               className="text-md font-bold leading-normal text-gray-800"
               id="exampleModalScrollableLabel">
-              Add to Stickies
+              Starred
             </h5>
             <button
               onClick={hideModal}

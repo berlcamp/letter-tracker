@@ -253,7 +253,7 @@
   @apply pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2
 }
 .app__listbox_options {
-  @apply absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm
+  @apply absolute mt-1 z-40 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm
 }
 .app__filter_input {
   @apply w-48 text-gray-500  focus:ring-0 focus:outline-none text-xs py-1 text-left inline-flex items-center dark:bg-gray-300
