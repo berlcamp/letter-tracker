@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import 'server-only'
 import './globals.css'
 
-import LandingPage from '@/components/ConfirmModal'
+import LandingPage from '@/components/LandingPage'
 import type { AccountTypes, UserAccessTypes } from '@/types/index'
 import type { Metadata } from 'next'
 

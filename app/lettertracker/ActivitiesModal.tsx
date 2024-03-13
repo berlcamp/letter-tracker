@@ -1,39 +1,41 @@
-"use client";
+'use client'
 
-import { CustomButton } from "@/components/index";
-import type { DocumentTypes } from "@/types";
-import { CalendarDaysIcon } from "@heroicons/react/20/solid";
-import { format } from "date-fns";
-import { useEffect, useRef } from "react";
+import { CustomButton } from '@/components/index'
+import type { DocumentTypes } from '@/types'
+import { CalendarDaysIcon } from '@heroicons/react/20/solid'
+import { format } from 'date-fns'
+import { useEffect, useRef } from 'react'
 
 interface ModalProps {
-  hideModal: () => void;
-  activitiesData: DocumentTypes[];
+  hideModal: () => void
+  activitiesData: DocumentTypes[]
 }
 
 export default function ActivitiesModal({
   hideModal,
   activitiesData,
 }: ModalProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      hideModal();
+    if (event.key === 'Escape') {
+      hideModal()
     }
-  };
+  }
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
+      document.removeEventListener('keydown', handleKeyDown)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wrapperRef]);
+  }, [wrapperRef])
 
   return (
     <>
-      <div ref={wrapperRef} className="app__modal_wrapper">
+      <div
+        ref={wrapperRef}
+        className="app__modal_wrapper">
         <div className="app__modal_wrapper2_large">
           <div className="app__modal_wrapper3">
             <div className="app__modal_header">
@@ -52,7 +54,7 @@ export default function ActivitiesModal({
               <table className="w-full text-sm text-left text-gray-600 dark:text-gray-400">
                 <thead className="text-xs border-b uppercase bg-gray-100 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th className="py-2 px-2 w-32">Routing&nbsp;No</th>
+                    <th className="py-2 px-2 w-32">Type</th>
                     <th className="py-2 px-2">Activity&nbsp;Date</th>
                     <th className="py-2 px-2">Particulars</th>
                   </tr>
@@ -66,12 +68,9 @@ export default function ActivitiesModal({
                   {activitiesData?.map((item, index) => (
                     <tr
                       key={index}
-                      className="bg-gray-50 text-xs border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-amber-50 dark:hover:bg-gray-600"
-                    >
+                      className="bg-gray-50 text-xs border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-amber-50 dark:hover:bg-gray-600">
                       <th className="py-2 px-2 text-gray-900 dark:text-white">
-                        <div className="font-semibold">
-                          {item.routing_slip_no}
-                        </div>
+                        <div className="font-semibold">{item.type}</div>
                       </th>
                       <td className="py-2 px-2">
                         <div className="flex items-center space-x-1">
@@ -79,7 +78,7 @@ export default function ActivitiesModal({
                           <span>
                             {format(
                               new Date(item.activity_date),
-                              "dd MMM yyyy"
+                              'dd MMM yyyy'
                             )}
                           </span>
                         </div>
@@ -94,5 +93,5 @@ export default function ActivitiesModal({
         </div>
       </div>
     </>
-  );
+  )
 }
