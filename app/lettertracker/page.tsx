@@ -137,6 +137,7 @@ const Page: React.FC = () => {
 
   const handleAdd = () => {
     setShowAddModal(true)
+    setSelectedItem(null)
   }
 
   const handleDelete = (id: string) => {
@@ -292,7 +293,11 @@ const Page: React.FC = () => {
                       key={index}
                       className="app__tr">
                       <td className="app__td app__td_firstcol">
-                        <span className="font-medium">{item.type}</span>
+                        <div className="font-medium">{item.type}</div>
+                        {(item.type === 'Others' ||
+                          item.type === 'Medical Assistance') && (
+                          <div className="font-medium mt-1">{item.specify}</div>
+                        )}
                       </td>
                       <td className="app__td">
                         <div className="space-y-2">

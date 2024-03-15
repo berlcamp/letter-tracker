@@ -55,6 +55,7 @@ const FormSchema = z.object({
   particulars: z.string().min(1, {
     message: 'Particulars is required.',
   }),
+  specify: z.string().optional(),
   date_received: z.date({
     required_error: 'Date Received is required.',
   }),
@@ -72,6 +73,15 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
 
   const [selectedImages, setSelectedImages] = useState<any>([])
   const [saving, setSaving] = useState(false)
+
+  const [showSpecify, setShowSpecify] = useState(
+    editData
+      ? editData.type === 'Others' || editData.type === 'Medical Assistance'
+        ? true
+        : false
+      : false
+  )
+  const [specifyLabel, setSpecifyLabel] = useState('')
 
   const [attachments, setAttachments] = useState<AttachmentTypes[] | []>([])
 
@@ -111,6 +121,7 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       type: editData ? editData.type : '',
+      specify: editData ? editData.specify : '',
       requester: editData ? editData.requester : '',
       particulars: editData ? editData.particulars : '',
       date_received: editData ? new Date(editData.date_received) : new Date(),
@@ -137,6 +148,7 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
       const newData = {
         status: 'Open',
         type: formdata.type,
+        specify: formdata.specify,
         date_received: format(new Date(formdata.date_received), 'yyyy-MM-dd'),
         activity_date: formdata.activity_date
           ? format(new Date(formdata.activity_date), 'yyyy-MM-dd')
@@ -185,6 +197,7 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
     try {
       const newData = {
         type: formdata.type,
+        specify: formdata.specify,
         date_received: format(new Date(formdata.date_received), 'yyyy-MM-dd'),
         activity_date: formdata.activity_date
           ? format(new Date(formdata.activity_date), 'yyyy-MM-dd')
@@ -321,7 +334,7 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
     <div
       ref={wrapperRef}
       className="app__modal_wrapper">
-      <div className="app__modal_wrapper2">
+      <div className="app__modal_wrapper2_large">
         <div className="app__modal_wrapper3">
           <div className="app__modal_header">
             <h5 className="text-md font-bold leading-normal text-gray-800 dark:text-gray-300">
@@ -337,202 +350,244 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
 
           <div className="app__modal_body">
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem className="w-[300px]">
-                      <FormLabel className="app__form_label">Type</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Choose Type" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {docTypes.map((type, index) => (
-                            <SelectItem
-                              key={type}
-                              value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="date_received"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="app__form_label">
-                        Date Received
-                      </FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={'outline'}
-                              className={cn(
-                                'w-[240px] pl-3 text-left font-normal',
-                                !field.value && 'text-muted-foreground'
-                              )}>
-                              {field.value ? (
-                                format(field.value, 'PPP')
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          className="w-auto p-0"
-                          align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) => date < new Date('1900-01-01')}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="activity_date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="app__form_label">
-                        Activity Date
-                      </FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={'outline'}
-                              className={cn(
-                                'w-[240px] pl-3 text-left font-normal',
-                                !field.value && 'text-muted-foreground'
-                              )}>
-                              {field.value ? (
-                                format(field.value, 'PPP')
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          className="w-auto p-0"
-                          align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) => date < new Date('1900-01-01')}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="requester"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="app__form_label">
-                        Requester
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Requesting Department / Requester Name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="particulars"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="app__form_label">
-                        Particulars
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Particulars"
-                          className="resize-none"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <hr />
-                <div className="w-full">
-                  {editData && (
-                    <div className="mb-4">
-                      {attachments?.length === 0 && (
-                        <span className="text-sm">No attachments</span>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="md:grid md:grid-cols-2 md:gap-4">
+                  <div className="space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="app__form_label">
+                            Type
+                          </FormLabel>
+                          <Select
+                            onValueChange={(value) => {
+                              form.setValue('type', value)
+                              if (value === 'Others') {
+                                setShowSpecify(true)
+                                setSpecifyLabel('Specify Type')
+                              } else if (value === 'Medical Assistance') {
+                                setShowSpecify(true)
+                                setSpecifyLabel('Specify Hospital')
+                              } else {
+                                setShowSpecify(false)
+                              }
+                            }}
+                            defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose Type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {docTypes.map((type, index) => (
+                                <SelectItem
+                                  key={type}
+                                  value={type}>
+                                  {type}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                      {attachments?.map((file, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center space-x-2 justify-start">
-                          <Attachment
-                            file={file.name}
-                            id={editData.id}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <div
-                    {...getRootProps()}
-                    className="cursor-pointer border-2 border-dashed border-gray-300 bg-gray-100 text-gray-600 px-4 py-10">
-                    <input {...getInputProps()} />
-                    <p className="text-xs">
-                      Drag and drop some files here, or click to select files
-                    </p>
+                    />
+                    {showSpecify && (
+                      <FormField
+                        control={form.control}
+                        name="specify"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="app__form_label">
+                              {specifyLabel}
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder={specifyLabel}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+                    <FormField
+                      control={form.control}
+                      name="date_received"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel className="app__form_label">
+                            Date Received
+                          </FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={'outline'}
+                                  className={cn(
+                                    'pl-3 text-left font-normal',
+                                    !field.value && 'text-muted-foreground'
+                                  )}>
+                                  {field.value ? (
+                                    format(field.value, 'PPP')
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date < new Date('1900-01-01')
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="activity_date"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel className="app__form_label">
+                            Activity Date
+                          </FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={'outline'}
+                                  className={cn(
+                                    'pl-3 text-left font-normal',
+                                    !field.value && 'text-muted-foreground'
+                                  )}>
+                                  {field.value ? (
+                                    format(field.value, 'PPP')
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date < new Date('1900-01-01')
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="requester"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="app__form_label">
+                            Requester
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Requesting Department / Requester Name"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="particulars"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="app__form_label">
+                            Particulars
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Particulars"
+                              className="resize-none"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  {fileRejections.length === 0 && selectedImages.length > 0 && (
-                    <div className="py-4">
-                      <div className="text-xs font-medium mb-2">
-                        Files to upload:
+                  <div className="w-full mt-6 md:mt-0">
+                    {editData && (
+                      <div className="mb-2">
+                        {attachments?.length === 0 ? (
+                          <div className="text-sm">No attachments</div>
+                        ) : (
+                          <div className="text-sm mb-2">Attachments:</div>
+                        )}
+                        {attachments?.map((file, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center space-x-2 justify-start">
+                            <Attachment
+                              file={file.name}
+                              id={editData.id}
+                            />
+                          </div>
+                        ))}
                       </div>
-                      {selectedFiles}
-                    </div>
-                  )}
-                  {fileRejections.length > 0 && (
-                    <div className="py-4">
-                      <p className="text-red-500 text-xs">
-                        File rejected. Please make sure its an image, PDF, DOC,
-                        or Excel file and less than 5MB.
+                    )}
+                    <div
+                      {...getRootProps()}
+                      className="cursor-pointer border-2 border-dashed border-gray-300 bg-gray-100 text-gray-600 px-4 py-10">
+                      <input {...getInputProps()} />
+                      <p className="text-xs">
+                        Drag and drop some files here, or click to select files
                       </p>
                     </div>
-                  )}
+                    {fileRejections.length === 0 &&
+                      selectedImages.length > 0 && (
+                        <div className="py-4">
+                          <div className="text-xs font-medium mb-2">
+                            Files to upload:
+                          </div>
+                          {selectedFiles}
+                        </div>
+                      )}
+                    {fileRejections.length > 0 && (
+                      <div className="py-4">
+                        <p className="text-red-500 text-xs">
+                          File rejected. Please make sure its an image, PDF,
+                          DOC, or Excel file and less than 5MB.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                <hr className="my-4" />
                 <div className="app__modal_footer">
                   <CustomButton
                     btnType="submit"

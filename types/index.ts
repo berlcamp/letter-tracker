@@ -70,6 +70,7 @@ export interface StickiesTypes {
 export interface DocumentTypes {
   id: string
   type: string
+  specify: string
   requester: string
   activity_date: string
   status: string
