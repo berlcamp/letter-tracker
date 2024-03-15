@@ -280,9 +280,9 @@ const Page: React.FC = () => {
             <table className="app__table">
               <thead className="app__thead">
                 <tr>
-                  <th className="app__th app__th_firstcol">Type</th>
+                  <th className="hidden md:table-cell app__th">Type</th>
                   <th className="app__th">Details</th>
-                  <th className="app__th">Status</th>
+                  <th className="hidden md:table-cell app__th">Status</th>
                   <th className="app__th"></th>
                 </tr>
               </thead>
@@ -292,7 +292,7 @@ const Page: React.FC = () => {
                     <tr
                       key={index}
                       className="app__tr">
-                      <td className="app__td app__td_firstcol">
+                      <td className="hidden md:table-cell app__td">
                         <div className="font-medium">{item.type}</div>
                         {(item.type === 'Others' ||
                           item.type === 'Medical Assistance') && (
@@ -301,6 +301,16 @@ const Page: React.FC = () => {
                       </td>
                       <td className="app__td">
                         <div className="space-y-2">
+                          <div className="md:hidden">
+                            <span className="font-light">Type:</span>{' '}
+                            <span className="font-medium">{item.type}</span>
+                            {(item.type === 'Others' ||
+                              item.type === 'Medical Assistance') && (
+                              <span className="font-medium mt-1">
+                                {item.specify}
+                              </span>
+                            )}
+                          </div>
                           <div>
                             <span className="font-light">Requester:</span>{' '}
                             <span className="font-medium">
@@ -352,9 +362,59 @@ const Page: React.FC = () => {
                               ))}
                             </div>
                           )}
+                          <div className="md:hidden flex items-center">
+                            <span
+                              className="font-bold"
+                              style={{ color: getStatusColor(item.status) }}>
+                              {item.status}
+                            </span>
+                            <Menu
+                              as="div"
+                              className="app__menu_container font-normal text-gray-600">
+                              <div>
+                                <Menu.Button className="app__dropdown_btn">
+                                  <ChevronDownIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                </Menu.Button>
+                              </div>
+
+                              <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95">
+                                <Menu.Items className="absolute left-0 z-30 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                  <div className="py-1">
+                                    {statusList.map((i, idx) => (
+                                      <Menu.Item key={idx}>
+                                        <div
+                                          onClick={() =>
+                                            handleChangeStatus(
+                                              item.id,
+                                              i.status
+                                            )
+                                          }
+                                          className="flex items-center justify-between space-x-2 cursor-pointer hover:bg-gray-100 text-gray-700 hover:text-gray-900 px-4 py-2 text-xs">
+                                          <span>{i.status}</span>
+                                          {i.status === item.status && (
+                                            <CheckIcon className="w-4 h-4" />
+                                          )}
+                                        </div>
+                                      </Menu.Item>
+                                    ))}
+                                  </div>
+                                </Menu.Items>
+                              </Transition>
+                            </Menu>
+                          </div>
                         </div>
                       </td>
-                      <td className="app__td">
+                      <td className="hidden md:table-cell app__td">
                         <div className="flex items-center">
                           <span
                             className="font-bold"

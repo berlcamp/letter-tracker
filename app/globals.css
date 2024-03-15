@@ -106,7 +106,7 @@
   @apply bg-gray-50 text-xs border-b hover:bg-amber-50
 }
 .app__th {
-  @apply py-2 px-2 text-gray-900
+  @apply py-2 px-4 text-gray-900
 }
 .app__th_firstcol {
   @apply !pl-4
@@ -115,7 +115,7 @@
   @apply !pl-4
 }
 .app__td {
-  @apply py-1 px-2
+  @apply py-1 px-4
 }
 .app__td_mobile {
   @apply py-2 space-y-2 flex-col font-normal
