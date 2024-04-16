@@ -553,6 +553,7 @@ export default function AddDocumentModal({ hideModal, editData }: ModalProps) {
                             key={index}
                             className="flex items-center space-x-2 justify-start">
                             <Attachment
+                              doc={editData}
                               file={file.name}
                               id={editData.id}
                             />

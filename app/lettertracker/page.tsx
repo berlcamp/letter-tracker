@@ -355,6 +355,7 @@ const Page: React.FC = () => {
                                   key={index}
                                   className="flex items-center space-x-2 justify-start">
                                   <Attachment
+                                    doc={item}
                                     file={file.name}
                                     id={item.id}
                                   />
@@ -363,16 +364,18 @@ const Page: React.FC = () => {
                             </div>
                           )}
                           <div className="md:hidden flex items-center">
-                            <span
-                              className="font-bold"
-                              style={{ color: getStatusColor(item.status) }}>
-                              {item.status}
-                            </span>
                             <Menu
                               as="div"
                               className="app__menu_container font-normal text-gray-600">
                               <div>
-                                <Menu.Button className="app__dropdown_btn">
+                                <Menu.Button className="app__dropdown_btn items-center">
+                                  <span
+                                    className="font-bold"
+                                    style={{
+                                      color: getStatusColor(item.status),
+                                    }}>
+                                    {item.status}
+                                  </span>
                                   <ChevronDownIcon
                                     className="h-5 w-5"
                                     aria-hidden="true"
@@ -416,16 +419,18 @@ const Page: React.FC = () => {
                       </td>
                       <td className="hidden md:table-cell app__td">
                         <div className="flex items-center">
-                          <span
-                            className="font-bold"
-                            style={{ color: getStatusColor(item.status) }}>
-                            {item.status}
-                          </span>
                           <Menu
                             as="div"
                             className="app__menu_container font-normal text-gray-600">
                             <div>
-                              <Menu.Button className="app__dropdown_btn">
+                              <Menu.Button className="app__dropdown_btn items-center">
+                                <span
+                                  className="font-bold"
+                                  style={{
+                                    color: getStatusColor(item.status),
+                                  }}>
+                                  {item.status}
+                                </span>
                                 <ChevronDownIcon
                                   className="h-5 w-5"
                                   aria-hidden="true"
