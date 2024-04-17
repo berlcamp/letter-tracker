@@ -20,7 +20,7 @@ export async function fetchDocuments (filters: DocumentFilterTypes, perPageCount
 
       // Full text search
     if (typeof filters.filterKeyword !== 'undefined' && filters.filterKeyword.trim() !== '') {
-      query = query.or(`particulars.ilike.%${filters.filterKeyword}%`)
+      query = query.or(`particulars.ilike.%${filters.filterKeyword}%,requester.ilike.%${filters.filterKeyword}%`)
     }
 
     // Filter Date
