@@ -1,4 +1,5 @@
 export const docTypes = [
+  'Asenso Truck Request',
   'Solicitation / Financial Assistance',
   'Medical Assistance',
   'Courtesy Call',
