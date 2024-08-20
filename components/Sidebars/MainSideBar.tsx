@@ -24,6 +24,17 @@ export default function MainSideBar() {
               Letter Tracker
             </span>
           </Link>
+          <Link
+            href="/dswdendorsementhor"
+            className={`app__menu_link ${
+              currentRoute === '/dswdendorsementhor'
+                ? 'app_menu_link_active'
+                : ''
+            }`}>
+            <span className="flex-1 ml-3 whitespace-nowrap">
+              DSWD Endorsements (HOR)
+            </span>
+          </Link>
         </li>
       </ul>
     </div>

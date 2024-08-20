@@ -79,7 +79,7 @@ export interface DocumentTypes {
   user_id: string
   asenso_user: AccountTypes
   tracker_stickies: StickiesTypes[]
-  attachments: { name: string}[]
+  attachments: { name: string }[]
 }
 
 export interface AccountTypes {
@@ -119,4 +119,34 @@ export interface UserAccessTypes {
   user_id: string
   type: string
   asenso_user: namesType
+}
+
+export interface DswdEndorsementTypes {
+  id: string
+  type: string
+  status: string
+  date: string
+  client_himself: boolean
+  docdor: string
+  relationship: string
+  amount: string
+  patient_fullname: string
+  patient_age: string
+  patient_gender: string
+  patient_address: string
+  patient_category: string
+  requester_fullname: string
+  requester_age: string
+  requester_gender: string
+  requester_address: string
+  requester_category: string
+  other: string
+  hospital: string
+  endorsement_no: number
+  diagnosis: string
+  maintenance_medicine: string
+  good_office: string
+  lab_test: string
+  cause_of_death: string
+  suffering_from: string
 }

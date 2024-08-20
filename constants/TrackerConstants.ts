@@ -6,7 +6,7 @@ export const docTypes = [
   'Invitation',
   'Infrastructure Request',
   'Request Endorsement/Applicants',
-  'Others'
+  'Others',
 ]
 
 export const statusList = [
@@ -14,10 +14,22 @@ export const statusList = [
   { status: 'For Further Instruction', color: '#997c00' },
   { status: 'Resolved', color: '#a44508' },
   { status: 'Open', color: '#2154db' },
-  { status: 'Approved', color: '#287f00' }
+  { status: 'Approved', color: '#287f00' },
 ]
 
-export const superAdmins = [
-  'berlcamp@gmail.com',
-  'berlcampomanes@gmail.com',
+export const superAdmins = ['berlcamp@gmail.com', 'berlcampomanes@gmail.com']
+
+export const dswdHospitals = [
+  'Mayor Hilarion A. Ramiro Sr. Medical Center',
+  'Misamis University Medical Center',
+  'Tobias Feliciano Faith General Hospital',
+  'St. Joseph General Hospital',
+  'Medina General Hospital',
+]
+
+export const endorsementTypes = [
+  'Hospital Bill',
+  'Funeral Assistance (Lab Test)',
+  'Funeral Assistance',
+  'Other',
 ]

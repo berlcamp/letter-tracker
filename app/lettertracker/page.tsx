@@ -197,7 +197,6 @@ const Page: React.FC = () => {
 
   // Update list whenever list in redux updates
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     setList(globallist)
   }, [globallist])
 

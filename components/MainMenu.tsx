@@ -28,6 +28,21 @@ const MainMenu: React.FC = () => {
                 </div>
               </div>
             </Link>
+            <Link href="/dswdendorsementhor">
+              <div className="app__menu_item">
+                <div className="pt-1">
+                  <DocumentDuplicateIcon className="w-8 h-8" />
+                </div>
+                <div>
+                  <div className="app__menu_item_label">
+                    DSWD Endorsements (HOR)
+                  </div>
+                  <div className="app__menu_item_label_description">
+                    DSWD Endorsements (HOR)
+                  </div>
+                </div>
+              </div>
+            </Link>
             {superAdmins.includes(email) && (
               <>
                 <Link href="/settings/system">

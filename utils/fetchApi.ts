@@ -4,7 +4,10 @@ import { format } from 'date-fns'
 // import { fullTextQuery } from './text-helper'
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export interface DocumentFilterTypes {
   filterDate?: Date | undefined
@@ -12,24 +15,41 @@ export interface DocumentFilterTypes {
   filterKeyword?: string
 }
 
-export async function fetchDocuments (filters: DocumentFilterTypes, perPageCount: number, rangeFrom: number) {
+export async function fetchDocuments(
+  filters: DocumentFilterTypes,
+  perPageCount: number,
+  rangeFrom: number
+) {
   try {
     let query = supabase
       .from('asenso_letter_trackers')
-      .select('*, asenso_letter_tracker_stickies(*), asenso_users:user_id(*)', { count: 'exact' })
+      .select('*, asenso_letter_tracker_stickies(*), asenso_users:user_id(*)', {
+        count: 'exact',
+      })
 
-      // Full text search
-    if (typeof filters.filterKeyword !== 'undefined' && filters.filterKeyword.trim() !== '') {
-      query = query.or(`particulars.ilike.%${filters.filterKeyword}%,requester.ilike.%${filters.filterKeyword}%,specify.ilike.%${filters.filterKeyword}%`)
+    // Full text search
+    if (
+      typeof filters.filterKeyword !== 'undefined' &&
+      filters.filterKeyword.trim() !== ''
+    ) {
+      query = query.or(
+        `particulars.ilike.%${filters.filterKeyword}%,requester.ilike.%${filters.filterKeyword}%,specify.ilike.%${filters.filterKeyword}%`
+      )
     }
 
     // Filter Date
     if (typeof filters.filterDate !== 'undefined') {
-      query = query.gte('date_received', format(new Date(filters.filterDate), 'yyyy-MM-dd'))
+      query = query.gte(
+        'date_received',
+        format(new Date(filters.filterDate), 'yyyy-MM-dd')
+      )
     }
 
     // Filter type
-    if (typeof filters.filterTypes !== 'undefined' && filters.filterTypes.length > 0) {
+    if (
+      typeof filters.filterTypes !== 'undefined' &&
+      filters.filterTypes.length > 0
+    ) {
       const statement: string[] = []
       filters.filterTypes?.forEach((type: string) => {
         const str = `type.eq.${type}`
@@ -63,7 +83,75 @@ export async function fetchDocuments (filters: DocumentFilterTypes, perPageCount
   }
 }
 
-export async function fetchActivities (today: string, endDate: Date) {
+export async function fetchDswdEndorsementsHor(
+  filters: {
+    filterKeyword?: string
+    filterType?: string
+    filterDateFrom?: Date | undefined
+    filterDateTo?: Date | undefined
+  },
+  perPageCount: number,
+  rangeFrom: number
+) {
+  try {
+    let query = supabase
+      .from('adm_dswd_endorsements_hor')
+      .select('*', { count: 'exact' })
+
+    // Full text search
+    if (filters.filterKeyword && filters.filterKeyword.trim() !== '') {
+      query = query.or(
+        `patient_fullname.ilike.%${filters.filterKeyword}%, requester_fullname.ilike.%${filters.filterKeyword}%`
+      )
+    }
+
+    // Filter type
+    if (filters.filterType && filters.filterType !== 'All') {
+      query = query.eq('type', filters.filterType)
+    }
+
+    // Filter date from
+    if (filters.filterDateFrom) {
+      query = query.gte(
+        'date',
+        format(new Date(filters.filterDateFrom), 'yyyy-MM-dd')
+      )
+    }
+
+    // Filter date to
+    if (filters.filterDateTo) {
+      query = query.lte(
+        'date',
+        format(new Date(filters.filterDateTo), 'yyyy-MM-dd')
+      )
+    }
+
+    // Perform count before paginations
+    // const { count } = await query
+
+    // Per Page from context
+    const from = rangeFrom
+    const to = from + (perPageCount - 1)
+    // Per Page from context
+    query = query.range(from, to)
+
+    // Order By
+    query = query.order('id', { ascending: false })
+
+    const { data, count, error } = await query
+
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    return { data, count }
+  } catch (error) {
+    console.error('fetch error xx', error)
+    return { data: [], count: 0 }
+  }
+}
+
+export async function fetchActivities(today: string, endDate: Date) {
   try {
     const { data, count, error } = await supabase
       .from('asenso_letter_trackers')
@@ -84,7 +172,11 @@ export async function fetchActivities (today: string, endDate: Date) {
   }
 }
 
-export async function fetchAccounts (filters: { filterStatus?: string }, perPageCount: number, rangeFrom: number) {
+export async function fetchAccounts(
+  filters: { filterStatus?: string },
+  perPageCount: number,
+  rangeFrom: number
+) {
   try {
     let query = supabase
       .from('asenso_users')
@@ -121,23 +213,24 @@ export async function fetchAccounts (filters: { filterStatus?: string }, perPage
   }
 }
 
-export async function logError (transaction: string, table: string, data: string, error: string) {
-  await supabase
-    .from('error_logs')
-    .insert({
-      system: 'agriko',
-      transaction,
-      table,
-      data,
-      error
-    })
+export async function logError(
+  transaction: string,
+  table: string,
+  data: string,
+  error: string
+) {
+  await supabase.from('error_logs').insert({
+    system: 'agriko',
+    transaction,
+    table,
+    data,
+    error,
+  })
 }
 
-export async function fetchErrorLogs (perPageCount: number, rangeFrom: number) {
+export async function fetchErrorLogs(perPageCount: number, rangeFrom: number) {
   try {
-    let query = supabase
-      .from('error_logs')
-      .select('*', { count: 'exact' })
+    let query = supabase.from('error_logs').select('*', { count: 'exact' })
 
     // Per Page from context
     const from = rangeFrom

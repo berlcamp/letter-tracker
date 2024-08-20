@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { CustomButton, OneColLayoutLoading } from '@/components/index'
 import { useFilter } from '@/context/FilterContext'
 import axios from 'axios'
@@ -72,7 +71,6 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
               .from('asenso_users')
               .insert({ ...newData, id: response.data.insert_id })
 
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             if (error2) throw new Error(error2.message)
 
             // Append new data in redux
@@ -127,7 +125,6 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
         .update(newData)
         .eq('id', editData.id)
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       if (error) throw new Error(error.message)
 
       // Update data in redux

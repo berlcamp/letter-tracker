@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 'use client'
 
 import {
@@ -134,7 +133,6 @@ const Page: React.FC = () => {
         .update({ status: 'Inactive' })
         .eq('id', selectedId)
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       if (error) throw new Error(error.message)
 
       // Update data in redux
@@ -158,7 +156,6 @@ const Page: React.FC = () => {
         .update({ status: 'Active' })
         .eq('id', selectedId)
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       if (error) throw new Error(error.message)
 
       // Update data in redux
@@ -182,7 +179,7 @@ const Page: React.FC = () => {
     //   const newList = globallist.filter((item: any) => item.id !== session.user.id)
     //   setList(newList)
     // } else {
-    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    //
     //   setList(globallist)
     // }
     setList(globallist)
@@ -200,7 +197,7 @@ const Page: React.FC = () => {
   const isDataEmpty = !Array.isArray(list) || list.length < 1 || !list
 
   // Check access from permission settings or Super Admins
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
   if (!superAdmins.includes(session.user.email)) return <Unauthorized />
 
   return (

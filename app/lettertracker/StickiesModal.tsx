@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 'use client'
 import TwoColTableLoading from '@/components/Loading/TwoColTableLoading'
 import { ConfirmModal, CustomButton } from '@/components/index'

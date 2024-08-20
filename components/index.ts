@@ -4,10 +4,11 @@ import CustomButton from './CustomButton'
 import DeleteModal from './DeleteModal'
 import FilterDateRange from './FilterDateRange'
 import Jobs from './Jobs'
-import LandingPage from "./LandingPage"
+import LandingPage from './LandingPage'
 import OneColLayoutLoading from './Loading/OneColLayoutLoading'
 import TableRowLoading from './Loading/TableRowLoading'
 import ThreeColTableLoading from './Loading/ThreeColTableLoading'
+import TwoColTableLoading from './Loading/TwoColTableLoading'
 import Login from './Login'
 import LoginBox from './LoginBox'
 import MainMenu from './MainMenu'
@@ -24,8 +25,29 @@ import Unauthorized from './Unauthorized'
 import UserBlock from './UserBlock'
 
 export {
-  AccountDetails, ConfirmModal, CustomButton, DeleteModal, FilterDateRange, Jobs, LandingPage, Login,
-  LoginBox, MainMenu, MainSideBar, OfflinePage, OneColLayoutLoading, PerPage, SettingsSideBar, ShowMore, Sidebar, TableRowLoading, ThreeColTableLoading, Title,
-  TopBar, TopBarDark, Unauthorized, UserBlock
+  AccountDetails,
+  ConfirmModal,
+  CustomButton,
+  DeleteModal,
+  FilterDateRange,
+  Jobs,
+  LandingPage,
+  Login,
+  LoginBox,
+  MainMenu,
+  MainSideBar,
+  OfflinePage,
+  OneColLayoutLoading,
+  PerPage,
+  SettingsSideBar,
+  ShowMore,
+  Sidebar,
+  TableRowLoading,
+  ThreeColTableLoading,
+  Title,
+  TopBar,
+  TopBarDark,
+  TwoColTableLoading,
+  Unauthorized,
+  UserBlock,
 }
-
