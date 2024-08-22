@@ -178,6 +178,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
     const { data, error } = await supabase
       .from('adm_dswd_endorsements_hor')
       .select('endorsement_no')
+      .eq('status', '')
       .eq('endorsement_type', type)
       .not('endorsement_no', 'is', null)
       .order('endorsement_no', { ascending: false })
