@@ -36,12 +36,10 @@ const PrintSummary: React.FC<ChildProps> = ({
           <LogoHeaderHor />
           <tr>
             <td
-              colSpan={6}
+              colSpan={7}
               className="text-center">
-              <div className="border border-red-500 border-dashed"></div>
-              <div className="border border-red-500 border-dashed mt-px"></div>
               <div className="text-xl underline underline-offset-2 mt-4 mb-6">
-                DSWD Endorsements Summary
+                Endorsements Summary
               </div>
             </td>
           </tr>
@@ -50,7 +48,8 @@ const PrintSummary: React.FC<ChildProps> = ({
             <td className="text-center border_black p-1">Patient</td>
             <td className="text-center border_black p-1">Requester</td>
             <td className="text-center border_black p-1">Date</td>
-            <td className="text-center border_black p-1">Type</td>
+            <td className="text-center border_black p-1">Request</td>
+            <td className="text-center border_black p-1">Endorsement Type</td>
             <td className="text-center border_black p-1">Amount</td>
           </tr>
           {selectedItems.map((med, i) => (
@@ -77,6 +76,7 @@ const PrintSummary: React.FC<ChildProps> = ({
                 {med.type !== 'Other' ? med.type : med.other}
                 {med.type === 'Hospital Bill' && <span> ({med.hospital})</span>}
               </td>
+              <td className="border_black p-1">{med.endorsement_type}</td>
               <td className="border_black p-1">{med.amount}</td>
             </tr>
           ))}
@@ -104,15 +104,8 @@ const PrintSummary: React.FC<ChildProps> = ({
               colSpan={2}
               className="text-xs font-bold p-px text-center pt-4">
               <div>Prepared By:</div>
-              <div className="mt-6">RINO KARLO G. LIM</div>
-              <div>Executive Assistant IV</div>
-            </td>
-            <td
-              colSpan={4}
-              className="text-xs font-bold p-px text-center pt-4">
-              <div>Noted By:</div>
-              <div className="mt-6">CAROLYN N. GO</div>
-              <div>Executive Assistant V</div>
+              <div className="mt-6">MARY GRACE T. CODILLA</div>
+              <div>Legislative Staff</div>
             </td>
           </tr>
         </tbody>

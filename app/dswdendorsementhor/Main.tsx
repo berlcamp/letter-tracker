@@ -51,6 +51,7 @@ const Page: React.FC = () => {
 
   // Filters
   const [filterType, setFilterType] = useState('All')
+  const [filterRequest, setFilterRequest] = useState('All')
   const [filterDateFrom, setFilterDateFrom] = useState<Date | undefined>(
     undefined
   )
@@ -75,6 +76,7 @@ const Page: React.FC = () => {
         {
           filterKeyword,
           filterType,
+          filterRequest,
           filterDateFrom,
           filterDateTo,
         },
@@ -102,6 +104,7 @@ const Page: React.FC = () => {
         {
           filterKeyword,
           filterType,
+          filterRequest,
           filterDateFrom,
           filterDateTo,
         },
@@ -139,7 +142,7 @@ const Page: React.FC = () => {
 
   const generateGLNo = async (pcode: string) => {
     const { data, error } = await supabase
-      .from('adm_dswd_endorsements_hor')
+      .from('adm_dswd_endorsements')
       .select('endorsement_no')
       .order('endorsement_no', { ascending: false })
       .limit(1)
@@ -176,7 +179,7 @@ const Page: React.FC = () => {
       }
 
       const { error } = await supabase
-        .from('adm_dswd_endorsements_hor')
+        .from('adm_dswd_endorsements')
         .update(newData)
         .eq('id', selectedId)
 
@@ -208,15 +211,19 @@ const Page: React.FC = () => {
   useEffect(() => {
     setList([])
     void fetchData()
-  }, [filterKeyword, perPageCount, filterType, filterDateFrom, filterDateTo])
+  }, [
+    filterRequest,
+    filterKeyword,
+    perPageCount,
+    filterType,
+    filterDateFrom,
+    filterDateTo,
+  ])
 
   const isDataEmpty = !Array.isArray(list) || list.length < 1 || !list
 
   // Check access from permission settings or Super Admins
-  if (
-    !hasAccess('request_tracker') &&
-    !superAdmins.includes(session.user.email)
-  )
+  if (!hasAccess('medicine') && !superAdmins.includes(session.user.email))
     return <Unauthorized />
 
   return (
@@ -228,7 +235,7 @@ const Page: React.FC = () => {
       <div className="app__main">
         <div>
           <div className="app__title">
-            <Title title="DSWD Endorsements (HOR)" />
+            <Title title="DSWD/PCSO Endorsements" />
             <CustomButton
               containerStyles="app__btn_green"
               title="Add New Record"
@@ -241,6 +248,7 @@ const Page: React.FC = () => {
           <div className="app__filters">
             <Filters
               setFilterType={setFilterType}
+              setFilterRequest={setFilterRequest}
               setFilterDateFrom={setFilterDateFrom}
               setFilterDateTo={setFilterDateTo}
               setFilterKeyword={setFilterKeyword}
@@ -253,6 +261,7 @@ const Page: React.FC = () => {
               <PrintSummaryButton
                 filterDateFrom={filterDateFrom}
                 filterDateTo={filterDateTo}
+                filterType={filterType}
               />
             </div>
           )}
@@ -271,10 +280,11 @@ const Page: React.FC = () => {
               <thead className="app__thead">
                 <tr>
                   <th className="app__th pl-4"></th>
+                  <th className="app__th">Type</th>
                   <th className="app__th">Patient</th>
                   <th className="app__th">Requester</th>
                   <th className="app__th">Date Requested</th>
-                  <th className="app__th">Type</th>
+                  <th className="app__th">Request</th>
                   <th className="app__th">Address</th>
                 </tr>
               </thead>
@@ -349,6 +359,9 @@ const Page: React.FC = () => {
                           </Transition>
                         </Menu>
                       </td>
+                      <th className="app__th_firstcol">
+                        <div>{item.endorsement_type}</div>
+                      </th>
                       <th className="app__th_firstcol">
                         <div>
                           {item.patient_fullname}

@@ -143,6 +143,7 @@ export interface DswdEndorsementTypes {
   other: string
   hospital: string
   endorsement_no: number
+  endorsement_type: string
   diagnosis: string
   maintenance_medicine: string
   good_office: string

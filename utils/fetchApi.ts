@@ -87,6 +87,7 @@ export async function fetchDswdEndorsementsHor(
   filters: {
     filterKeyword?: string
     filterType?: string
+    filterRequest?: string
     filterDateFrom?: Date | undefined
     filterDateTo?: Date | undefined
   },
@@ -107,7 +108,12 @@ export async function fetchDswdEndorsementsHor(
 
     // Filter type
     if (filters.filterType && filters.filterType !== 'All') {
-      query = query.eq('type', filters.filterType)
+      query = query.eq('endorsement_type', filters.filterType)
+    }
+
+    // Filter Request
+    if (filters.filterRequest && filters.filterRequest !== 'All') {
+      query = query.eq('type', filters.filterRequest)
     }
 
     // Filter date from

@@ -30,6 +30,7 @@ import { z } from 'zod'
 
 interface FilterTypes {
   setFilterType: (po: string) => void
+  setFilterRequest: (po: string) => void
   setFilterDateFrom: (date: Date | undefined) => void
   setFilterDateTo: (date: Date | undefined) => void
   setFilterKeyword: (keyword: string) => void
@@ -40,10 +41,12 @@ const FormSchema = z.object({
   dateFrom: z.date().optional(),
   dateTo: z.date().optional(),
   type: z.string().optional(),
+  request: z.string().optional(),
 })
 
 const Filters = ({
   setFilterType,
+  setFilterRequest,
   setFilterDateFrom,
   setFilterDateTo,
   setFilterKeyword,
@@ -53,12 +56,14 @@ const Filters = ({
       dateFrom: undefined,
       dateTo: undefined,
       type: '',
+      request: '',
       keyword: '',
     },
   })
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setFilterType(data.type || 'All')
+    setFilterRequest(data.request || 'All')
     setFilterDateFrom(data.dateFrom)
     setFilterDateTo(data.dateTo)
     setFilterKeyword(data.keyword || '')
@@ -68,6 +73,7 @@ const Filters = ({
   const handleClear = () => {
     form.reset()
     setFilterType('All')
+    setFilterRequest('All')
     setFilterDateFrom(undefined)
     setFilterDateTo(undefined)
     setFilterKeyword('')
@@ -183,10 +189,10 @@ const Filters = ({
             <div className="items-center inline-flex app__filter_field_container">
               <FormField
                 control={form.control}
-                name="type"
+                name="request"
                 render={({ field }) => (
                   <FormItem className="w-[240px]">
-                    <FormLabel className="app__form_label">Type</FormLabel>
+                    <FormLabel className="app__form_label">Request</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       value={field.value}
@@ -205,6 +211,32 @@ const Filters = ({
                             {item}
                           </SelectItem>
                         ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="items-center inline-flex app__filter_field_container">
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem className="w-[240px]">
+                    <FormLabel className="app__form_label">Type</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Choose" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="All">All</SelectItem>
+                        <SelectItem value="DSWD">DSWD</SelectItem>
+                        <SelectItem value="PCSO">PCSO</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>

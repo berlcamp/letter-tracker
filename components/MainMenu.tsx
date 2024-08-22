@@ -35,10 +35,10 @@ const MainMenu: React.FC = () => {
                 </div>
                 <div>
                   <div className="app__menu_item_label">
-                    DSWD Endorsements (HOR)
+                    DSWD/PCSO Endorsements (HOR)
                   </div>
                   <div className="app__menu_item_label_description">
-                    DSWD Endorsements (HOR)
+                    DSWD/PCSO Endorsements (HOR)
                   </div>
                 </div>
               </div>
