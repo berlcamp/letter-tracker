@@ -142,7 +142,7 @@ const Page: React.FC = () => {
 
   const generateGLNo = async (pcode: string) => {
     const { data, error } = await supabase
-      .from('adm_dswd_endorsements')
+      .from('adm_dswd_endorsements_hor')
       .select('endorsement_no')
       .order('endorsement_no', { ascending: false })
       .limit(1)
@@ -179,7 +179,7 @@ const Page: React.FC = () => {
       }
 
       const { error } = await supabase
-        .from('adm_dswd_endorsements')
+        .from('adm_dswd_endorsements_hor')
         .update(newData)
         .eq('id', selectedId)
 
