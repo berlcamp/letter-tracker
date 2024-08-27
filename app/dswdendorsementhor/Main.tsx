@@ -320,7 +320,7 @@ const Page: React.FC = () => {
                             leaveTo="transform opacity-0 scale-95">
                             <Menu.Items className="app__dropdown_items">
                               <div className="py-1">
-                                {hasAccess('medicine_admin') && (
+                                {hasAccess('request_tracker') && (
                                   <>
                                     <Menu.Item>
                                       <div
