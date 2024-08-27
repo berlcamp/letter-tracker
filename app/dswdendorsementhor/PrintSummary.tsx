@@ -105,7 +105,7 @@ const PrintSummary: React.FC<ChildProps> = ({
           </tr>
           <tr>
             <td
-              colSpan={2}
+              colSpan={4}
               className="text-xs font-bold p-px text-center pt-4">
               <div>Prepared By:</div>
               <div className="mt-6">MARY GRACE T. CODILLA</div>
