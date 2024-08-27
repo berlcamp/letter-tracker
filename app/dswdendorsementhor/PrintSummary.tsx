@@ -18,6 +18,10 @@ const PrintSummary: React.FC<ChildProps> = ({
   //
   const [totalAmount, setTotalAmount] = useState(0)
 
+  const list: DswdEndorsementTypes[] = selectedItems.filter(
+    (obj) => obj.status !== 'Cancelled'
+  )
+
   useEffect(() => {
     const t = selectedItems.reduce(
       (accumulator, i) => accumulator + Number(i.amount),
@@ -52,7 +56,7 @@ const PrintSummary: React.FC<ChildProps> = ({
             <td className="text-center border_black p-1">Endorsement Type</td>
             <td className="text-center border_black p-1">Amount</td>
           </tr>
-          {selectedItems.map((med, i) => (
+          {list.map((med, i) => (
             <tr key={i}>
               <td className="border_black p-1">{i + 1}</td>
               <td className="border_black p-1">
