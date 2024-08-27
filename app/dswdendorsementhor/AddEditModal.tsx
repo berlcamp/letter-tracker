@@ -728,8 +728,8 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                       </div>
                     </div>
                   )}
-                  {/* Financial Assistance (Others) */}
-                  {type === 'Financial Assistance (Others)' && (
+                  {/* Financial/Medicine Assistance */}
+                  {type === 'Financial/Medicine Assistance' && (
                     <div className="w-full space-y-2 text-xs">
                       <div>
                         We would like to respectfully endorse to your good

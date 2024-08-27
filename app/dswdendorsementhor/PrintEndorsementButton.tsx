@@ -46,7 +46,7 @@ export default function PrintEndorsementButton({ selectedItem }: ModalProps) {
         </div>
       )
     }
-    if (selectedItem.type === 'Financial Assistance (Others)') {
+    if (selectedItem.type === 'Financial/Medicine Assistance') {
       return (
         <div style={{ pageBreakBefore: 'always' }}>
           <PrintFinancialOther
