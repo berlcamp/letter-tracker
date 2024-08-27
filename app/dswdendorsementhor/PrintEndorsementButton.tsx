@@ -5,7 +5,10 @@ import { DswdEndorsementTypes } from '@/types'
 import { PrinterIcon } from 'lucide-react'
 import React, { forwardRef, useRef } from 'react'
 import ReactToPrint from 'react-to-print'
-import PrintEndorsement from './PrintEndorsement'
+import PrintFinancialLabTest from './PrintFinancialLabTest'
+import PrintFinancialOther from './PrintFinancialOther'
+import PrintFuneralAssistance from './PrintFuneralAssistance'
+import PrintHospitalBill from './PrintHospitalBill'
 
 interface ModalProps {
   selectedItem: DswdEndorsementTypes
@@ -21,15 +24,50 @@ export default function PrintEndorsementButton({ selectedItem }: ModalProps) {
 
   // Using forwardRef to pass the ref down to the ChildComponent
   const ChildWithRef = forwardRef<HTMLDivElement, ChildProps>((props, ref) => {
-    return (
-      <div style={{ pageBreakBefore: 'always' }}>
-        <PrintEndorsement
-          {...props}
-          forwardedRef={ref}
-          selectedItem={props.item}
-        />
-      </div>
-    )
+    if (selectedItem.type === 'Hospital Bill') {
+      return (
+        <div style={{ pageBreakBefore: 'always' }}>
+          <PrintHospitalBill
+            {...props}
+            forwardedRef={ref}
+            selectedItem={props.item}
+          />
+        </div>
+      )
+    }
+    if (selectedItem.type === 'Financial Assistance (Lab Test)') {
+      return (
+        <div style={{ pageBreakBefore: 'always' }}>
+          <PrintFinancialLabTest
+            {...props}
+            forwardedRef={ref}
+            selectedItem={props.item}
+          />
+        </div>
+      )
+    }
+    if (selectedItem.type === 'Financial Assistance (Others)') {
+      return (
+        <div style={{ pageBreakBefore: 'always' }}>
+          <PrintFinancialOther
+            {...props}
+            forwardedRef={ref}
+            selectedItem={props.item}
+          />
+        </div>
+      )
+    }
+    if (selectedItem.type === 'Funeral Assistance') {
+      return (
+        <div style={{ pageBreakBefore: 'always' }}>
+          <PrintFuneralAssistance
+            {...props}
+            forwardedRef={ref}
+            selectedItem={props.item}
+          />
+        </div>
+      )
+    }
   })
 
   return (

@@ -46,6 +46,8 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
   const requester = watch('requester_fullname')
   const hospital = watch('hospital')
   const diagnosis = watch('diagnosis')
+  const lab_test = watch('lab_test')
+  const patient_gender = watch('patient_gender')
 
   const onSubmit = async (formdata: DswdEndorsementTypes) => {
     if (saving) return
@@ -84,7 +86,13 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
       requester_gender: formdata.requester_gender,
       requester_address: formdata.requester_address,
       requester_category: formdata.requester_category,
+      diagnosis: formdata.diagnosis,
       endorsement_no: eno,
+      maintenance_medicine: formdata.maintenance_medicine,
+      good_office: formdata.good_office,
+      lab_test: formdata.lab_test,
+      cause_of_death: formdata.cause_of_death,
+      suffering_from: formdata.suffering_from,
     }
 
     try {
@@ -213,6 +221,10 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
       endorsement_type: editData ? editData.endorsement_type : '',
       other: editData ? editData.other : '',
       hospital: editData ? editData.hospital : '',
+      good_office: editData ? editData.good_office : '',
+      cause_of_death: editData ? editData.cause_of_death : '',
+      maintenance_medicine: editData ? editData.maintenance_medicine : '',
+      diagnosis: editData ? editData.diagnosis : '',
       client_himself: editData ? editData.client_himself : false,
       docdor: editData ? editData.docdor : '',
       relationship: editData ? editData.relationship : '',
@@ -284,7 +296,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                           <option value="DSWD">DSWD</option>
                           <option value="PCSO">PCSO</option>
                         </select>
-                        {errors.type && (
+                        {errors.endorsement_type && (
                           <div className="app__error_message">
                             Endorsement type is required
                           </div>
@@ -317,54 +329,6 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                       </div>
                     </div>
                   </div>
-                  {type === 'Other' && (
-                    <div className="app__form_field_inline_half">
-                      <div className="w-full">
-                        <div className="app__label_standard">
-                          Specify type of request
-                        </div>
-                        <div>
-                          <input
-                            {...register('other', { required: true })}
-                            type="text"
-                            placeholder="Specify type of request"
-                            className="app__input_standard"
-                          />
-                          {errors.other && (
-                            <div className="app__error_message">
-                              Request type is required
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {type === 'Hospital Bill' && (
-                    <div className="app__form_field_inline_half">
-                      <div className="w-full">
-                        <div className="app__label_standard">Hospital</div>
-                        <div>
-                          <select
-                            {...register('hospital', { required: true })}
-                            className="app__input_standard">
-                            <option value="">Select</option>
-                            {dswdHospitals.map((h, i) => (
-                              <option
-                                key={i}
-                                value={h}>
-                                {h}
-                              </option>
-                            ))}
-                          </select>
-                          {errors.hospital && (
-                            <div className="app__error_message">
-                              Hospital is required
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
                   <div className="app__form_field_inline_half">
                     <div className="w-full">
                       <div className="app__label_standard">Amount</div>
@@ -379,7 +343,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                       </div>
                     </div>
                   </div>
-                  <div className="app__form_field_inline_half">
+                  {/* <div className="app__form_field_inline_half">
                     <div className="w-full">
                       <div className="app__label_standard">Doctor</div>
                       <div>
@@ -391,7 +355,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </fieldset>
                 <fieldset className="border p-4 mt-8 bg-gray-100">
                   <legend className="text-center text-gray-700 text-lg font-semibold">
@@ -565,16 +529,45 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                         <span style={{ fontWeight: 'bold' }}>{patient}</span> of{' '}
                         <span style={{ fontWeight: 'bold' }}>
                           {patient_address},
-                        </span>
-                        Ozamiz City in the amount of (amount in words) (P
-                        figures).
+                        </span>{' '}
+                        in the amount of (amount in words) (P figures).
                       </div>
                       <div>
-                        <span style={{ fontWeight: 'bold' }}>{patient}</span>{' '}
-                        has been admitted to {hospital} by reason of {diagnosis}
-                        . As a consequence, his/her family has incurred a large
-                        amount of Medical Bills way above what they can
-                        ill-afford.
+                        <span style={{ fontWeight: 'bold' }}>{patient} </span>{' '}
+                        has been admitted to
+                        <select
+                          {...register('hospital', { required: true })}
+                          className="w-[32] p-px outline-none border">
+                          <option value="">Select</option>
+                          {dswdHospitals.map((h, i) => (
+                            <option
+                              key={i}
+                              value={h}>
+                              {h}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.hospital && (
+                          <div className="app__error_message">
+                            Hospital is required
+                          </div>
+                        )}
+                        by reason of
+                        <input
+                          {...register('diagnosis', { required: true })}
+                          type="text"
+                          placeholder="diagnosis"
+                          className="w-[32] p-px outline-none border"
+                        />
+                        {errors.diagnosis && (
+                          <div className="app__error_message">
+                            Diagnosis is required
+                          </div>
+                        )}
+                        . As a consequence,{' '}
+                        {patient_gender === 'Male' ? 'his' : 'her'} family has
+                        incurred a large amount of Medical Bills way above what
+                        they can ill-afford.
                       </div>
                       <div>
                         Hence, we humbly exhort upon your benevolence to help us
@@ -607,9 +600,8 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                         <span style={{ fontWeight: 'bold' }}>{patient}</span> of{' '}
                         <span style={{ fontWeight: 'bold' }}>
                           {patient_address},
-                        </span>
-                        Ozamiz City in the amount of (amount in words) (P
-                        figures).
+                        </span>{' '}
+                        in the amount of (amount in words) (P figures).
                       </div>
                       <div>
                         <span style={{ fontWeight: 'bold' }}>{patient}</span>{' '}
@@ -625,7 +617,9 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                             This is required
                           </span>
                         )}
-                        ) which caused his/her demise. As a consequence, her
+                        ) which caused{' '}
+                        {patient_gender === 'Male' ? 'his' : 'her'} demise. As a
+                        consequence, {patient_gender === 'Male' ? 'his' : 'her'}{' '}
                         family as represented by{' '}
                         <span style={{ fontWeight: 'bold' }}>{requester}</span>{' '}
                         has incurred a large amount of funeral expenses way
@@ -659,7 +653,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                     </div>
                   )}
                   {/* Financial Assistance (Lab Test) */}
-                  {type === 'Funeral Assistance (Lab Test)' && (
+                  {type === 'Financial Assistance (Lab Test)' && (
                     <div className="w-full space-y-2 text-xs">
                       <div>
                         We would like to respectfully endorse to your good
@@ -676,33 +670,121 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                             This is required
                           </span>
                         )}
-                        )<span style={{ fontWeight: 'bold' }}>{type}</span> of{' '}
+                        ) of{' '}
                         <span style={{ fontWeight: 'bold' }}>{patient}</span> of{' '}
                         <span style={{ fontWeight: 'bold' }}>
                           {patient_address},
-                        </span>
-                        Ozamiz City in the amount of (amount in words) (P
-                        figures).
+                        </span>{' '}
+                        in the amount of (amount in words) (P figures).
                       </div>
                       <div>
                         <span style={{ fontWeight: 'bold' }}>{patient}</span>{' '}
-                        has (
+                        has been suffering from
                         <input
-                          {...register('cause_of_death', { required: true })}
+                          {...register('suffering_from', { required: true })}
                           type="text"
-                          placeholder="(figured into a vehicular accident on) been suffering from ..."
+                          placeholder=""
                           className="w-[350px] p-px outline-none border"
                         />
-                        {errors.cause_of_death && (
+                        {errors.suffering_from && (
                           <span className="px-1 text-red-500 font-bold">
                             This is required
                           </span>
                         )}
-                        ) which caused his/her demise. As a consequence, her
-                        family as represented by{' '}
-                        <span style={{ fontWeight: 'bold' }}>{requester}</span>{' '}
-                        has incurred a large amount of funeral expenses way
-                        above what they can ill-afford.
+                        . As a consequence,{' '}
+                        {patient_gender === 'Male' ? 'he' : 'she'} was requested
+                        to submit{' '}
+                        {patient_gender === 'Male' ? 'himself' : 'herself'} to{' '}
+                        {lab_test} to determine his medical condition which is
+                        above what {patient_gender === 'Male' ? 'he' : 'she'}{' '}
+                        can ill-afford.
+                      </div>
+                      <div>
+                        Hence, we humbly exhort upon your benevolence to help us
+                        lighten the burden of our constituent in this very
+                        difficult time by according them the privilege of
+                        availing your good office’s{' '}
+                        <input
+                          {...register('good_office', { required: true })}
+                          type="text"
+                          placeholder="Office"
+                          className="w-[32] p-px outline-none border"
+                        />
+                        .
+                        {errors.good_office && (
+                          <span className="px-1 text-red-500 font-bold">
+                            This is required
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        We are sincerely anticipating your good office’s
+                        accommodation of this endorsement.
+                      </div>
+                      <div>
+                        Together let us move towards ASENSO SECOND DISTRITO.
+                      </div>
+                    </div>
+                  )}
+                  {/* Financial Assistance (Others) */}
+                  {type === 'Financial Assistance (Others)' && (
+                    <div className="w-full space-y-2 text-xs">
+                      <div>
+                        We would like to respectfully endorse to your good
+                        office the request for financial assistance for
+                        <input
+                          {...register('other', { required: true })}
+                          type="text"
+                          placeholder="maintenance medicines (or medical operation, etc)"
+                          className="w-[300px] p-px outline-none border"
+                        />
+                        {errors.other && (
+                          <span className="px-1 text-red-500 font-bold">
+                            This is required
+                          </span>
+                        )}
+                        of <span style={{ fontWeight: 'bold' }}>{patient}</span>{' '}
+                        of{' '}
+                        <span style={{ fontWeight: 'bold' }}>
+                          {patient_address},
+                        </span>{' '}
+                        in the amount of (amount in words) (P figures).
+                      </div>
+                      <div>
+                        <span style={{ fontWeight: 'bold' }}>{patient}</span>{' '}
+                        has has been diagnosed with
+                        <input
+                          {...register('diagnosis', { required: true })}
+                          type="text"
+                          placeholder="diagnosis"
+                          className="w-[32] p-px outline-none border"
+                        />
+                        {errors.diagnosis && (
+                          <span className="px-1 text-red-500 font-bold">
+                            Diagnosis is required
+                          </span>
+                        )}
+                        . As a consequence,{' '}
+                        {patient_gender === 'Male' ? 'he' : 'she'} was
+                        prescribed to take{' '}
+                        <input
+                          {...register('maintenance_medicine', {
+                            required: true,
+                          })}
+                          type="text"
+                          placeholder="maintenance medicine"
+                          className="w-[32] p-px outline-none border"
+                        />
+                        {errors.maintenance_medicine && (
+                          <span className="px-1 text-red-500 font-bold">
+                            This is required
+                          </span>
+                        )}{' '}
+                        as a maintenance medicine for{' '}
+                        {patient_gender === 'Male' ? 'his' : 'her'} condition
+                        which is above what{' '}
+                        {patient_gender === 'Male' ? 'he' : 'she'} can
+                        ill-afford.
                       </div>
                       <div>
                         Hence, we humbly exhort upon your benevolence to help us

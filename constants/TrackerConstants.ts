@@ -29,7 +29,7 @@ export const dswdHospitals = [
 
 export const endorsementTypes = [
   'Hospital Bill',
-  'Funeral Assistance (Lab Test)',
+  'Financial Assistance (Lab Test)',
+  'Financial Assistance (Others)',
   'Funeral Assistance',
-  'Other',
 ]

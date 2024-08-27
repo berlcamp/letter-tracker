@@ -32,7 +32,7 @@ export default function MainSideBar() {
                 : ''
             }`}>
             <span className="flex-1 ml-3 whitespace-nowrap">
-              DSWD Endorsements (HOR)
+              DSWD/PCSO Endorsements (HOR)
             </span>
           </Link>
         </li>
