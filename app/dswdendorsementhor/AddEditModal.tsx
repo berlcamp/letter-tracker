@@ -223,6 +223,8 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
       hospital: editData ? editData.hospital : '',
       good_office: editData ? editData.good_office : '',
       cause_of_death: editData ? editData.cause_of_death : '',
+      suffering_from: editData ? editData.suffering_from : '',
+      lab_test: editData ? editData.lab_test : '',
       maintenance_medicine: editData ? editData.maintenance_medicine : '',
       diagnosis: editData ? editData.diagnosis : '',
       client_himself: editData ? editData.client_himself : false,
