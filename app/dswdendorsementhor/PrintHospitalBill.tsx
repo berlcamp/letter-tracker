@@ -50,6 +50,21 @@ const PrintHospitalBill: React.FC<ChildProps> = ({
         </thead>
         <tbody className="text-sm">
           <tr>
+            <td colSpan={6}>
+              <div className="mt-4 text-center w-[350px]">
+                <div className="font-bold">
+                  REP. SANCHO FERNANDO “ANDO” F. OAMINAL
+                </div>
+                <div className="font-bold">
+                  2nd District, Misamis Occidental
+                </div>
+                <div className="font-bold">
+                  Assistant Majority Leader, 19th Congress
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
             <td
               colSpan={6}
               className="text-center">
