@@ -129,6 +129,7 @@ export interface DswdEndorsementTypes {
   client_himself: boolean
   docdor: string
   relationship: string
+  request_amount: string
   amount: string
   patient_fullname: string
   patient_age: string

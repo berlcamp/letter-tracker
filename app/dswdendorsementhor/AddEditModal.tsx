@@ -76,6 +76,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
       docdor: formdata.docdor,
       relationship: formdata.relationship,
       amount: formdata.amount,
+      request_amount: formdata.request_amount,
       patient_fullname: formdata.patient_fullname,
       patient_age: formdata.patient_age,
       patient_gender: formdata.patient_gender,
@@ -138,6 +139,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
       docdor: formdata.docdor,
       relationship: formdata.relationship,
       amount: formdata.amount,
+      request_amount: formdata.request_amount,
       patient_fullname: formdata.patient_fullname,
       patient_age: formdata.patient_age,
       patient_gender: formdata.patient_gender,
@@ -231,6 +233,7 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
       docdor: editData ? editData.docdor : '',
       relationship: editData ? editData.relationship : '',
       amount: editData ? editData.amount : '',
+      request_amount: editData ? editData.request_amount : '',
       patient_fullname: editData ? editData.patient_fullname : '',
       patient_age: editData ? editData.patient_age : '',
       patient_gender: editData ? editData.patient_gender : '',
@@ -333,7 +336,21 @@ const AddEditModal = ({ hideModal, editData }: ModalProps) => {
                   </div>
                   <div className="app__form_field_inline_half">
                     <div className="w-full">
-                      <div className="app__label_standard">Amount</div>
+                      <div className="app__label_standard">Request Amount</div>
+                      <div>
+                        <input
+                          {...register('request_amount')}
+                          type="number"
+                          step="any"
+                          placeholder="Request Amount"
+                          className="app__input_standard"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="app__form_field_inline_half">
+                    <div className="w-full">
+                      <div className="app__label_standard">Granted Amount</div>
                       <div>
                         <input
                           {...register('amount')}
